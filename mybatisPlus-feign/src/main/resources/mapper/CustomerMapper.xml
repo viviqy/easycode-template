@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fairychar.feign.mapper.CustomerMapper">
+
+  <resultMap type="com.fairychar.feign.entity.Customer" id="BaseResultMap">
+    <result property="id" column="id"/>
+    <result property="username" column="username"/>
+    <result property="password" column="password"/>
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    id, username, password      
+  </sql>
+
+    <!--通过实体作为筛选条件查询-->
+  <select id="queryAll" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+    from mp.customer
+    <where>
+      1=1 
+      <if test="id != null">
+       and `id` = #{id}
+      </if>
+      <if test="username != null and username != ''">
+       and `username` like concat('%',#{username},'%')
+      </if>
+      <if test="password != null and password != ''">
+       and `password` like concat('%',#{password},'%')
+      </if>
+    </where>
+  </select>
+    
+    <!--通过实体作为筛选条件查询-->
+  <select id="pageAll" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+    from mp.customer
+    <where>
+      1=1 
+      <if test="customer.id != null">
+        and `id` = #{customer.id}
+      </if>
+      <if test="customer.username != null and customer.username != ''">
+        and `username` like concat('%',#{customer.username},'%')
+      </if>
+      <if test="customer.password != null and customer.password != ''">
+        and `password` like concat('%',#{customer.password},'%')
+      </if>
+    </where>
+  </select>
+  
+    <!--通过实体作为筛选条件查询总数-->
+  <select id="count" resultType="int">
+    select count(*)
+    from mp.customer
+    <where>
+      1=1 
+      <if test="id != null">
+       and `id` = #{id}
+      </if>
+      <if test="username != null and username != ''">
+       and `username` like concat('%',#{username},'%')
+      </if>
+      <if test="password != null and password != ''">
+       and `password` like concat('%',#{password},'%')
+      </if>
+    </where>
+  </select>
+</mapper>
